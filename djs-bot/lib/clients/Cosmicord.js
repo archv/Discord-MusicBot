@@ -23,7 +23,7 @@ class CosmicordPlayerExtended extends CosmiPlayer {
 		/** @type {boolean} */
 		this.twentyFourSeven = false;
 		/** @type {boolean} */
-		this.keepLogs = true;
+		this.set('keepLogs', true);
 	}
 
 	/** The guild id of the player */
