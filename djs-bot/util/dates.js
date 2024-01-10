@@ -46,7 +46,7 @@ function thisWeek(begOffset = { days: 0 }, endOffset = { days: 0 }) {
 /**
  * Returns formatted time string
  * 
- * @example [10:01:2024 - 21:14]
+ * @example [10.01.2024 - 21:14]
  */
 function getCurrentTimeString() {
 	const date = new Date();
@@ -64,7 +64,7 @@ function getCurrentTimeString() {
 		minutes: formatNumber(date.getMinutes()),
 	}
 
-	return `[${formattedDate.date}:${formattedDate.month}:${formattedDate.year} - ${formattedDate.hours}:${formattedDate.minutes}]`;
+	return `[${formattedDate.date}.${formattedDate.month}.${formattedDate.year} - ${formattedDate.hours}:${formattedDate.minutes}]`;
 }
 
 module.exports = {
