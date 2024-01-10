@@ -63,6 +63,8 @@ const embedClearedQueue = () =>
 /**
  * @typedef {object} TrackStartedEmbedParams
  * @property {import("cosmicord.js").CosmiTrack=} track
+ * @property {import("../lib/clients/MusicClient").CosmicordPlayerExtended} player
+ * @property {string=} title
  *
  * @param {TrackStartedEmbedParams}
  */
