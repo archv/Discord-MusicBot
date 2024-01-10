@@ -1,18 +1,21 @@
 const colors = require("colors");
 const { EmbedBuilder } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
+const { keepLogsEmbed } = require("../../util/embeds");
 
 const command = new SlashCommand()
-	.setName("autopause")
-	.setDescription("Automatically pause when everyone leaves the voice channel (toggle)")
+	.setName("keeplogs")
+	.setDescription("Remove song history (toggle)")
 	.setRun(async (client, interaction) => {
 		let channel = await client.getChannel(client, interaction);
-		if (!channel) return;
-
+		if (!channel) {
+			return;
+		}
+		
 		let player;
-		if (client.manager.Engine)
+		if (client.manager.Engine) {
 			player = client.manager.Engine.players.get(interaction.guild.id);
-		else
+		} else {
 			return interaction.reply({
 				embeds: [
 					new EmbedBuilder()
@@ -20,7 +23,8 @@ const command = new SlashCommand()
 						.setDescription("Lavalink node is not connected"),
 				],
 			});
-
+		}
+		
 		if (!player) {
 			return interaction.reply({
 				embeds: [
@@ -31,32 +35,27 @@ const command = new SlashCommand()
 				ephemeral: true,
 			});
 		}
-
-		let autoPauseEmbed = new EmbedBuilder().setColor(client.config.embedColor);
-		const autoPause = player.get("autoPause");
+		
+		const keepLogs = player.get("keepLogs");
 		player.set("requester", interaction.guild.members.me);
-
-		if (!autoPause) {
-			player.set("autoPause", true);
+		
+		if (!keepLogs) {
+			player.set("keepLogs", true);
 		} else {
-			player.set("autoPause", false);
+			player.set("keepLogs", false);
 		}
-		autoPauseEmbed
-			.setDescription(`**Auto Pause is** \`${!autoPause ? "ON" : "OFF"}\``)
-			.setFooter({
-				text: `The player will ${!autoPause ? "now be automatically" : "no longer be"} paused when everyone leaves the voice channel.`
-			});
+
 		client.warn(
-			`Player: ${player.options.guild} | [${colors.blue(
-				"AUTOPAUSE"
-			)}] has been [${colors.blue(!autoPause ? "ENABLED" : "DISABLED")}] in ${
+			`Player: ${ player.options.guild } | [${ colors.blue(
+				"KEEPLOGS",
+			) }] has been [${ colors.blue(!keepLogs? "ENABLED" : "DISABLED") }] in ${
 				client.guilds.cache.get(player.options.guild)
 					? client.guilds.cache.get(player.options.guild).name
 					: "a guild"
-			}`
+			}`,
 		);
 
-		const ret = await interaction.reply({ embeds: [autoPauseEmbed], fetchReply: true });		
+		const ret = await interaction.reply({ embeds: [keepLogsEmbed({keepLogs})], fetchReply: true });
 		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);
 		return ret;
 	});

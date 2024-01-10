@@ -4,6 +4,7 @@ const colors = require("colors");
 const { getClient } = require("../bot");
 const socket = require("../api/v1/dist/ws/eventsHandler");
 const { updateControlMessage, updateNowPlaying } = require("../util/controlChannel");
+const { trackStartedEmbed } = require("../util/embeds");
 
 // entries in this map should be removed when bot disconnected from vc
 const progressUpdater = new Map();
@@ -70,6 +71,14 @@ function handleTrackStart({ player, track }) {
 	if (playedTracks.length >= 25) playedTracks.shift();
 
 	if (!playedTracks.includes(track)) playedTracks.push(track);
+
+	const keepLogs = player.get("keepLogs");
+	if (keepLogs) {
+		client.channels.cache
+			.get(player.textChannel)
+			.send({ embeds: [trackStartedEmbed({ track, player, title: 'Played track' })]})
+			.catch(client.warn);
+	}
 
 	updateNowPlaying(player, track);
 	updateControlMessage(player.guild, track);

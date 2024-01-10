@@ -12,15 +12,14 @@
 const colors = require("colors");
 const getConfig = require("./util/getConfig");
 const { ShardingManager } = require('discord.js');
+const { getCurrentTimeString } = require("./util/dates");
 
 try {
 	// Gets the config file and passes it (as if returned) to the function in `.then( () => {} )`
 	getConfig().then((conf) => {
 		const manager = new ShardingManager('./bot.js', { token: conf.token, respawn: true, totalShards: "auto", timeout: -1 });
 		manager.on('shardCreate', shard => {
-			let d = new Date();
-			let time = `[${d.getDate()}:${d.getMonth()}:${d.getFullYear()} - ${d.getHours()}:${d.getMinutes()}]`;
-			console.log(colors.gray(time) + colors.cyan(" | " + `Spawned shard ${shard.id}`));
+			console.log(colors.gray(getCurrentTimeString()) + colors.cyan(`${' '.repeat(9)}| Spawned shard ${shard.id}`));
 		});
 		manager.spawn({ amount: "auto", delay: 5500, timeout: -1 }).catch((err) => {
 			console.log(colors.red("\tError spawning shards: " + err));

@@ -1,5 +1,6 @@
 const winston = require("winston");
 const colors = require("colors");
+const { getCurrentTimeString } = require("../util/dates");
 
 const map = {
 	log: { level: "debug", message: "info: ", color: "green" },
@@ -23,19 +24,11 @@ class Logger {
 	}
 
 	/**
-	 * @returns String formatted date for logging
-	 */
-	getCurrentTimeString() {
-		let d = new Date();
-		return `[${d.getDate()}:${d.getMonth()}:${d.getFullYear()} - ${d.getHours()}:${d.getMinutes()}]`;
-	}
-
-	/**
 	 * @param {Formatting} formatting
 	 * @param  {...any} args
 	 */
 	printLog(formatting, ...args) {
-		const time = this.getCurrentTimeString();
+		const time = getCurrentTimeString();
 
 		this.logger.log({
 			time: `${time}`,
@@ -45,7 +38,8 @@ class Logger {
 
 		if (formatting.color) {
 			console.log(
-				colors.gray(time) + colors[formatting.color || "green"](` [${formatting.level.toUpperCase()}] | `) + args.join(" ")
+				colors.gray(time) + 
+				colors[formatting.color || "green"](` [${formatting.level.toUpperCase().padEnd(5, ' ')}] | `) + args.join(" ")
 			);
 		}
 	}

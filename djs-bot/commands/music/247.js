@@ -40,16 +40,16 @@ const command = new SlashCommand()
 		);
 		const twentyFourSeven = player.get("twentyFourSeven");
 		
-		if (!twentyFourSeven || twentyFourSeven === false) {
+		if (!twentyFourSeven) {
 			player.set("twentyFourSeven", true);
 		} else {
 			player.set("twentyFourSeven", false);
 		}
 		twentyFourSevenEmbed
-		  .setDescription(`**24/7 mode is** \`${!twentyFourSeven ? "ON" : "OFF"}\``)
-		  .setFooter({
-		    text: `The bot will ${!twentyFourSeven ? "now" : "no longer"} stay connected to the voice channel 24/7.`
-      });
+			.setDescription(`**24/7 mode is** \`${!twentyFourSeven ? "ON" : "OFF"}\``)
+			.setFooter({
+				text: `The bot will ${!twentyFourSeven ? "now" : "no longer"} stay connected to the voice channel 24/7.`
+			});
 		client.warn(
 			`Player: ${ player.options.guild } | [${ colors.blue(
 				"24/7",
@@ -65,8 +65,10 @@ const command = new SlashCommand()
 		if (!player.playing && player.queue.totalSize === 0 && twentyFourSeven) {
 			player.destroy();
 		}
-		
-		return interaction.reply({ embeds: [twentyFourSevenEmbed] });
+
+		const ret = await interaction.reply({ embeds: [twentyFourSevenEmbed], fetchReply: true });		
+		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);
+		return ret;
 	});
 
 module.exports = command;

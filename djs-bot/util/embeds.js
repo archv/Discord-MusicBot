@@ -66,13 +66,13 @@ const embedClearedQueue = () =>
  *
  * @param {TrackStartedEmbedParams}
  */
-const trackStartedEmbed = ({ track, player } = {}) => {
+const trackStartedEmbed = ({ track, player, title = 'Now playing' } = {}) => {
 	const client = getClient();
 
 	const embed = new EmbedBuilder().setColor(client.config.embedColor);
 
 	if (track) {
-		embed.setAuthor({ name: "Now playing", iconURL: client.config.iconURL })
+		embed.setAuthor({ name: title, iconURL: client.config.iconURL })
 			.setDescription(`[${track.title}](${track.uri})`)
 			.addFields([
 				{
@@ -281,6 +281,18 @@ const autoQueueEmbed = ({ autoQueue }) => {
 		});
 };
 
+const keepLogsEmbed = ({ keepLogs }) => {
+	const client = getClient();
+	return new EmbedBuilder()
+		.setColor(client.config.embedColor)
+		.setDescription(`**Keep logs is** \`${!keepLogs ? "ON" : "OFF"}\``)
+		.setFooter({
+			text: `Music history will ${
+				!keepLogs ? "no longer be" : "now be automatically"
+			} removed.`,
+		});
+};
+
 /**
  * @param {import("../lib/clients/MusicClient").CosmicordPlayerExtended} player
  * @param {EmbedBuilder} embed
@@ -328,6 +340,7 @@ module.exports = {
 	addQueueEmbed,
 	loadedPlaylistEmbed,
 	autoQueueEmbed,
+	keepLogsEmbed,
 	addPlayerStateFooter,
 	getButtons,
 	embedNotEnoughSong,

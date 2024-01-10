@@ -43,7 +43,32 @@ function thisWeek(begOffset = { days: 0 }, endOffset = { days: 0 }) {
 	return dateSpan("week", "week", begOffset, endOffset);
 }
 
+/**
+ * Returns formatted time string
+ * 
+ * @example [10:01:2024 - 21:14]
+ */
+function getCurrentTimeString() {
+	const date = new Date();
+		
+	const formatNumber = (num) => num.toLocaleString('en-US', {
+		minimumIntegerDigits: 2,
+		useGrouping: false
+	  });
+
+	const formattedDate = {
+		date: formatNumber(date.getDate()),
+		month: formatNumber(date.getMonth() + 1),
+		year: date.getFullYear(),
+		hours: formatNumber(date.getHours()),
+		minutes: formatNumber(date.getMinutes()),
+	}
+
+	return `[${formattedDate.date}:${formattedDate.month}:${formattedDate.year} - ${formattedDate.hours}:${formattedDate.minutes}]`;
+}
+
 module.exports = {
 	thisWeek,
 	dateSpan,
+	getCurrentTimeString,
 };

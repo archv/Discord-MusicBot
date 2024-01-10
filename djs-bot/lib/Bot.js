@@ -112,7 +112,7 @@ class Bot extends Client {
 		this.LoadSchedules();
 		this.LoadEvents();
 
-		this.warn("Booting up the bot...\n\t" + this.denom);
+		this.warn("Booting up the bot...\n" + ' '.repeat(31) + this.denom);
 
 		LoadErrorHandler(this);
 		LoadDebugListeners(this);

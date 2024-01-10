@@ -22,6 +22,7 @@ Structure.extend(
 		constructor(...props) {
 			super(...props);
 			this.twentyFourSeven = false;
+			this.keepLogs = true;
 		}
 
 		/**
