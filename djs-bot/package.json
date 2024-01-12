@@ -1,7 +1,7 @@
 {
 	"description": "",
 	"main": "index.js",
-	"version": "5.4.2",
+	"version": "5.4.3",
 	"name": "discord-musicbot",
 	"scripts": {
 		"guild": "npm run api-build && node scripts/guild",
