@@ -36,7 +36,7 @@ const command = new SlashCommand()
     const autoPause = player.get("autoPause");
     player.set("requester", interaction.guild.members.me);
 
-    if (!autoPause || autoPause === false) {
+    if (!autoPause) {
       player.set("autoPause", true);
     } else {
       player.set("autoPause", false);
@@ -56,7 +56,9 @@ const command = new SlashCommand()
       }`
     );
 
-    return interaction.reply({ embeds: [autoPauseEmbed] });
+    const ret = await interaction.reply({ embeds: [autoPauseEmbed], fetchReply: true });
+    if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);
+    return ret;
   });
 
 module.exports = command;

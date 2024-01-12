@@ -38,13 +38,17 @@ const command = new SlashCommand()
 		
 		const status = playerUtil.stop(player);
 		
-		interaction.reply({
+		const ret = await interaction.reply({
 			embeds: [
 				new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription(`:wave: | **Bye Bye!**`),
 			],
+			fetchReply: true
 		});
+
+		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);
+		return ret;
 	});
 
 module.exports = command;

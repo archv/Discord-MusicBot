@@ -40,7 +40,7 @@ const command = new SlashCommand()
 		);
 		const twentyFourSeven = player.get("twentyFourSeven");
 		
-		if (!twentyFourSeven || twentyFourSeven === false) {
+		if (!twentyFourSeven) {
 			player.set("twentyFourSeven", true);
 		} else {
 			player.set("twentyFourSeven", false);
@@ -66,7 +66,9 @@ const command = new SlashCommand()
 			player.destroy();
 		}
 		
-		return interaction.reply({ embeds: [twentyFourSevenEmbed] });
+		const ret = await interaction.reply({ embeds: [twentyFourSevenEmbed], fetchReply: true });
+		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);
+		return ret;
 	});
 
 module.exports = command;

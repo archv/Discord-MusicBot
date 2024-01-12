@@ -36,7 +36,7 @@ const command = new SlashCommand()
     const autoLeave = player.get("autoLeave");
     player.set("requester", interaction.guild.members.me);
 
-    if (!autoLeave || autoLeave === false) {
+    if (!autoLeave) {
       player.set("autoLeave", true);
     } else {
       player.set("autoLeave", false);
@@ -56,7 +56,9 @@ const command = new SlashCommand()
       }`
     );
 
-    return interaction.reply({ embeds: [autoLeaveEmbed] });
+    const ret = await interaction.reply({ embeds: [autoLeaveEmbed], fetchReply: true });
+    if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);
+    return ret;
   });
 
 module.exports = command;

@@ -39,7 +39,7 @@ const command = new SlashCommand()
 		const autoQueue = player.get("autoQueue");
 		player.set("requester", interaction.guild.members.me);
 		
-		if (!autoQueue || autoQueue === false) {
+		if (!autoQueue) {
 			player.set("autoQueue", true);
 		} else {
 			player.set("autoQueue", false);
@@ -55,7 +55,9 @@ const command = new SlashCommand()
 			}`,
 		);
 		
-		return interaction.reply({ embeds: [autoQueueEmbed({autoQueue})] });
+		const ret = await interaction.reply({ embeds: [autoQueueEmbed({autoQueue})], fetchReply: true });
+		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);
+		return ret;
 	});
 
 module.exports = command;
